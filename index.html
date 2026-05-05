@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download Irregular Hours</title>
+  <style>
+    /* ─── REPLACE THESE IF YOU WANT TO CUSTOMIZE THE LOOK ─── */
+    :root {
+      --bg: #0d0d0d;
+      --text: #f5f0e8;
+      --accent: #e8d5b0;
+      --muted: #666;
+      --font: 'Georgia', serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 420px;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: normal;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+      color: var(--accent);
+    }
+
+    p {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--muted);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .fallback-links {
+      display: none; /* shown only if auto-redirect fails */
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .fallback-links a {
+      display: block;
+      padding: 0.85rem 1.5rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .fallback-links a:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Irregular Hours</h1>
+    <div class="spinner" id="spinner"></div>
+    <p id="message">Taking you to the right place&hellip;</p>
+
+    <!-- Shown only if redirect doesn't fire automatically -->
+    <div class="fallback-links" id="fallback">
+      <a href="https://apps.apple.com/us/app/irregular-hours/id6761536317" id="ios-link">Download on the App Store</a>
+      <a href="https://play.google.com/store/apps/details?id=com.irregularhours.app" id="android-link">Get it on Google Play</a>
+      <a href="https://www.irregularhours.com" id="web-link">Visit our website</a>
+    </div>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────────────────
+    // STEP 1: REPLACE THESE THREE URLs BEFORE GOING LIVE
+    // ─────────────────────────────────────────────────────────
+    const APP_STORE_URL   = "https://apps.apple.com/us/app/irregular-hours/id6761536317";
+    const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.irregularhours.app";
+    const FALLBACK_URL    = "https://www.irregularhours.com";
+    // ─────────────────────────────────────────────────────────
+
+    // Detect device
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isIOS     = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+    const isAndroid = /android/i.test(ua);
+
+    // Redirect
+    if (isIOS) {
+      window.location.href = APP_STORE_URL;
+    } else if (isAndroid) {
+      window.location.href = GOOGLE_PLAY_URL;
+    } else {
+      window.location.href = FALLBACK_URL;
+    }
+
+    // Safety net: if redirect doesn't fire within 2 seconds,
+    // show manual links so the user is never stuck.
+    setTimeout(function () {
+      document.getElementById("spinner").style.display = "none";
+      document.getElementById("message").textContent = "Choose your platform:";
+      document.getElementById("fallback").style.display = "flex";
+    }, 2000);
+  </script>
+</body>
+</html>
